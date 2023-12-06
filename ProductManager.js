@@ -1,4 +1,5 @@
-import fs from 'fs/promises';
+import { promises as fsPromises } from 'fs';
+
 
 class ProductManager {
   constructor(path) {
@@ -18,7 +19,7 @@ class ProductManager {
       stock: stock,
     };
     this.products.push(producto);
-    await fs.promises.writeFile(
+    await fsPromises.writeFile(
       this.path,
       JSON.stringify(this.products),
       "utf-8"
@@ -27,7 +28,7 @@ class ProductManager {
 
   async getProduct() {
     try {
-      const prodJson = await fs.promises.readFile(this.path, "utf-8");
+      const prodJson = await fsPromises.readFile(this.path, "utf-8");
       const productos = JSON.parse(prodJson);
       return productos;
     } catch (err) {
@@ -38,7 +39,7 @@ class ProductManager {
 
   async getProductById(id) {
     try {
-      const prodJson = await fs.promises.readFile(this.path, "utf-8");
+      const prodJson = await fsPromises.readFile(this.path, "utf-8");
       const productos = JSON.parse(prodJson);
 
       const productById = productos.find((producto) => producto.id == id);
@@ -62,7 +63,7 @@ class ProductManager {
 
       if (productToUpdate) {
         Object.assign(productToUpdate, updatedProduct);
-        await fs.promises.writeFile(this.path, JSON.stringify(productos), 'utf-8');
+        await fsPromises.writeFile(this.path, JSON.stringify(productos), 'utf-8');
         return productToUpdate;
       } else {
         console.log("Id del producto no encontrado. No se realizó el reemplazo del producto deseado.");
@@ -74,6 +75,38 @@ class ProductManager {
     }
   }
 }
+
+const productManager = new ProductManager('./products.json');
+
+async function mainCall() {
+  const existeProductos = await productManager.getProduct();
+
+  if (!existeProductos || existeProductos.lenght === 0) {
+    await productManager.addProduct(
+      1,
+      'Coca Cola',
+      600,
+      'Lata de Coca Cola',
+      './coca.png',
+      12345,
+      100
+    );
+    await productManager.addProduct(
+      2,
+      '7UP',
+      500,
+      'Lata de 7UP',
+      './7UP.png',
+      165,
+      2000
+    );
+    console.log(await productManager.getProduct());
+  } else{
+    console.log('Los productos ya existen. No se añadieron nuevamente.')
+  }
+}
+
+mainCall();
 
 export default ProductManager;
 
