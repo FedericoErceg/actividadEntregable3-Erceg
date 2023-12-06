@@ -1,0 +1,110 @@
+Que es nodeJS?
+Es un entorno de desarollo completo sobre el cual viven y se ejecutan nuestros programas. Trabaja con el motor V8 que es el mismo de Chrome, el cual nos permite  convertir codigo de javascript a codigo maquina, para poder ser procesado correctamente.
+
+actividad 1:
+
+const numArr = [];
+for(let i = 0; i < 10000; i++){
+    const numeroAleatorio = Math.floor(Math.random() * 20 + 1); //Math.floor() nos da numeros enteros y el Math.random() son numeros random
+    numArr.push(numeroAleatorio);
+}
+
+const objectNum = {};
+
+for (const numeros of numArr) {
+    objectNum[numeros] = (objectNum[numeros] || 0) + 1;
+}
+
+console.log(objectNum);
+
+----------------------------------------------------------------
+
+Modulos nativos de nodeJS
+- fs
+- crypto
+- http
+- path
+
+Practica de modulos nativos fs + crypto
+-------------------------------------------------------------------------
+
+modulos de terceros NPM "Node package manage"
+
+package.json - es el archivo que permite configurar nuestro proyecto, agregando scripts, etc...
+
+como instalar una dependencia? 
+- En un proyecto basio
+- Correr el comando npm init
+- Correr el comando npm install nombre_del_modulo      // ---> para instalar una libreria, en el ejemplo en vivo intalamos la libreria axios
+- utilizar el nuevo modulo instalado
+
+Ejemplo en vivo: 
+ 
+manejo de verciones de NPM 
+Ej: v2.0.4  --> Esto es una convencion
+    - El 2 (major version, quiere dercir que es version con grandes cambios y puede afectar a versiones anteriores)
+    - El 0 (minor version, quiere decir que hay cambios pero que no deberia de afectar a verciones anteriores)
+    - El 4 (patch version son arreglos en la libreria de bugs, asi que en teoria no se deberia de estar cambiando nada)
+
+Operadores para actualizar versiones
+^2.1122.0 ("Caret") Sirve para instalar la version menor mas reciente, es decir si tenemos el caret y hacemos una actualizacion nos va a actualizar a la versioon minor mas alta
+~5.0.1 ("Tilde o de negacion") solo actualiza los parches, por ejemplo si actulizamos ~5.0.1 nos va llevar a la version ~5.0.10
+
+comandos para actualizar en NPM
+comando: npm update
+
+------------------------------------------------------------------------------
+Para relizar una calculadora de edad trabajamos con momentjs (Que nos hace instalar luxon) y con esto podemos hacer una calculadora mas sencilla.
+En la pagina web de momentjs tienen todos los comandos disponobles para poder usar. https://momentjs.com/
+https://moment.github.io/luxon/#/?id=luxon
+
+Donde dice Node.js en el menu de instalacion tenemos todo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

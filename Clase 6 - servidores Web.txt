@@ -1,0 +1,223 @@
+Servidores web
+
+Protocolo HTTP
+
+- Un protocolo es una serie de reglas que permite la comunicacion entre 2 dispositivos o mas.
+
+http request <---------> http response
+  cliente                   server
+
+- Los servidores manejan multiples peticiones, sobre todo los de nodeJS
+
+Primero que necesitamos. Instalar "Nodemon" con el comando. (de mandera global)
+    - npm install -g Nodemon
+
+
+Express
+- Es un framework minimalista que permitira desarrollar servidores mas complejos.
+    Nos facilita: rutas para peticiones, mejor la estructura del proyecto, maneja funciones mas complejas y utiliza el middlewares
+
+Como se instala? 
+
+1- npm init -y
+2- npm install express
+3- crear archivo .gitignore y dentro colocar "/node_modules" sin las commilas
+4- crear carpeta src
+5- dentro de src crear "app.js"
+6- donde del archivo package.json colocar lo siguiente:
+{
+  "name": "clase-6---servidores-web",
+  "version": "1.0.0",
+  "description": "Un proyecto sobre servidores web utilizando Express.js",
+  "main": "src/app.mjs",
+  "type": "commonjs",                     --------> esto hay que colocar
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+
+
+7- Ahora importamos en el archiovo app.js dentro de la carpeta src lo siguiente:
+    import express from 'express';
+
+
+muestra:
+import express from 'express';
+
+
+// Cremoa primero una instacia de app donde llamamos a express
+const app = express();
+const PORT = 8080;
+// Ahora simplemento con esto podemos hacer el listen
+
+app.get('/saludo'/*primero la  ruta de donde queremos traer info*/, (req, res) => {
+    res.send('Hola mundo desde el backEnd' /*despues la funcion ejecutable*/);
+}); //el get es siempre para obtener informacion, en el primero creamos una ruta llamada saludo
+
+app.listen(PORT, () => {
+    console.log(`servidor funcionando en puerto ${PORT}`);
+});//para establecer en que puerto vamos a escuchar, apartir de aca podemos usar todo lo que tiene el express
+
+----------------------------------------
+- Ahora todos los ejemplos con get()
+
+import express from 'express';
+
+
+// Cremoa primero una instacia de app donde llamamos a express
+const app = express();
+const PORT = 8080;
+// Ahora simplemento con esto podemos hacer el listen
+
+app.get('/saludo'/*primero la  ruta de donde queremos traer info*/, (req, res) => {
+    res.send('Hola mundo desde el backEnd' /*despues la funcion ejecutable*/);
+}); //el get es siempre para obtener informacion, en el primero creamos una ruta llamada saludo
+
+const user = {
+    name: 'Federico',
+    lastname: 'Erceg',
+    edad: 27,
+    mail: 'correo@gmail.com'
+}
+
+app.get('/user', (req, res) =>{
+    res.send(user);
+});
+
+app.get('/bienvenida', (req, res) => {
+    res.send('<h1 style="color: blue">Bienvenidos!</h1>');
+});
+
+app.listen(PORT, () => {
+    console.log(`servidor funcionando en puerto ${PORT}`);
+});//para establecer en que puerto vamos a escuchar, apartir de aca podemos usar todo lo que tiene el express
+
+----------------------------------------------------------------------------------------------------------------------
+
+req.params
+
+app.get('/user-param/:name/:lastname', (req, res) =>{
+    const {name, lastname} = req.params;    // el {name, lastname} es la desestructuracion para obtener el name y el lastname de la ruta creada
+    res.send(`Hola ${name} ${lastname}`);
+})
+
+http://localhost:8080/user-param/Federico/Erceg
+
+---------------------------
+URL's                                               para usar las url con queri: app.use(express.urlencoded({extended: true}));
+-diferencia entre params y query-
+
+los params son parametros que se reciven fijos, o sea ek valor lo da uno y es eso. En cambio un Query va variando segun la URL que se va poniendo
+
+
+
+
+
+----------------------------------------------------------------------------------------------- todo el archivo de ejemplos ----------------------------------------------
+import express from 'express';
+
+
+// Cremoa primero una instacia de app donde llamamos a express
+const app = express();
+const PORT = 8080;
+// Ahora simplemento con esto podemos hacer el listen
+app.use(express.urlencoded({extended: true}));
+
+
+app.get('/saludo'/*primero la  ruta de donde queremos traer info*/, (req, res) => {
+    res.send('Hola mundo desde el backEnd' /*despues la funcion ejecutable*/);
+}); //el get es siempre para obtener informacion, en el primero creamos una ruta llamada saludo
+
+const user = {
+    name: 'Federico',
+    lastname: 'Erceg',
+    edad: 27,
+    mail: 'correo@gmail.com'
+}
+
+const users = [
+    {
+        id: 1,
+        name: 'Federico',
+        lastname: 'Erceg',
+        edad: 27,
+        mail: 'correo@gmail.com'
+    },
+    {
+        id: 2,
+        name: 'Hector',
+        lastname: 'domingez',
+        edad: 30,
+        mail: 'dominguez@gmail.com'
+    },
+    {
+        id: 3,
+        name: 'Juan',
+        lastname: 'Lavalle',
+        edad: 80,
+        mail: 'lavelle@gmail.com'
+    },
+    {
+        id: 4,
+        name: 'Amalia',
+        lastname: 'shelwin',
+        edad: 90,
+        mail: 'shelwin@gmail.com'
+    }
+];
+
+// app.get('/users', (req, res) => {
+//     res.send(users);
+// });
+app.get('/users/:id', (req, res) => {
+    const { id } = req.params;
+    const user = users.find(u => u.id === parseInt(id));
+    if(!user){
+        res.send({error: 'User not found'})
+    }
+    res.send(user);
+});
+
+app.get('/users/', (req, res) => {
+    const { id } = req.query;
+    res.send(id);
+})
+// en el navegador: http://localhost:8080/users?user=1100 "El 1100 es una id Cualquiera que le di" ---> esto es para el querey selector. El queri se usa para cuando no sabemos cuantos parametros se van a dar como por ej id's infinitas
+
+app.get('/users', (req, res) => {
+    const {id, nombre, apellido } = req.query;
+    res.send(`El id es ${id} y el nombre ${nombre} ${apellido}`);
+});
+
+//http://localhost:8080/users?id=1100&nombre=Federico 
+
+app.get('/user', (req, res) =>{
+    res.send(user);
+});
+
+app.get('/user-param/:name/:lastname', (req, res) =>{
+    const {name, lastname} = req.params;    // el {name, lastname} es la desestructuracion para obtener el name y el lastname de la ruta creada
+    res.send(`Hola ${name} ${lastname}`);
+})
+
+app.get('/bienvenida', (req, res) => {
+    res.send('<h1 style="color: blue">Bienvenidos!</h1>');
+});
+
+app.listen(PORT, () => {
+    console.log(`servidor funcionando en puerto ${PORT}`);
+});//para establecer en que puerto vamos a escuchar, apartir de aca podemos usar todo lo que tiene el express
+
+
+
+
+
+
+
+
