@@ -79,34 +79,40 @@ class ProductManager {
 const productManager = new ProductManager('./products.json');
 
 async function mainCall() {
-  const existeProductos = await productManager.getProduct();
+  try {
+    const existeProductos = await productManager.getProduct();
 
-  if (!existeProductos || existeProductos.lenght === 0) {
-    await productManager.addProduct(
-      1,
-      'Coca Cola',
-      600,
-      'Lata de Coca Cola',
-      './coca.png',
-      12345,
-      100
-    );
-    await productManager.addProduct(
-      2,
-      '7UP',
-      500,
-      'Lata de 7UP',
-      './7UP.png',
-      165,
-      2000
-    );
-    console.log(await productManager.getProduct());
-  } else{
-    console.log('Los productos ya existen. No se añadieron nuevamente.')
+    if (!existeProductos || existeProductos.length === 0) {
+      await productManager.addProduct(
+        1,
+        'Coca Cola',
+        600,
+        'Lata de Coca Cola',
+        './coca.png',
+        12345,
+        100
+      );
+      await productManager.addProduct(
+        2,
+        '7UP',
+        500,
+        'Lata de 7UP',
+        './7UP.png',
+        165,
+        2000
+      );
+      console.log(await productManager.getProduct());
+    } else {
+      console.log('Los productos ya existen. No se añadieron nuevamente.');
+    }
+  } catch (error) {
+    console.error('Error en mainCall:', error);
   }
 }
 
-mainCall();
+(async () => {
+  await mainCall();
+})();
 
 export default ProductManager;
 

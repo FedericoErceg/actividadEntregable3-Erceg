@@ -1,5 +1,5 @@
-const express = require('express');
-const ProductManager = require('./ProductManager');
+import express from 'express';
+import ProductManager from '../ProductManager.js';
 
 const productManager = new ProductManager('./products.json');
 const app = express();
@@ -22,7 +22,6 @@ app.get('/products/:id', async (req, res) => {
     res.status(500).json({ error: 'Error del servidor, vuelve a cargar la página o espera a que lo solucionemos' });
   }
 });
-
 
 app.listen(PORT, () => {
   console.log(`Servidor funcionando en puerto ${PORT}`);
